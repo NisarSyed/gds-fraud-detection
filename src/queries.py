@@ -71,6 +71,35 @@ def view_sp_fraudsters(driver):
     """
     return run_query(driver, query)
 
+def get_random_client(driver):
+    query = """
+    MATCH (c:Client)
+    WITH c
+    ORDER BY rand()
+    MATCH (c)-[:HAS_EMAIL]-(e:Email)
+    with c, e
+    MATCH (c)-[:HAS_SSN]-(s:SSN)
+    with c, e, s
+    MATCH (c)-[:HAS_PHONE]-(p:Phone)
+    with c, e, s, p
+    MATCH (c:Client)-[:PERFORMED]-(t:Transaction)-[:TO]-(d)
+    RETURN c.id as id, c.name as name, e.email as email,
+        s.ssn as ssn, p.phoneNumber as phone, t.amount as amount,
+        labels(t) as TxType, labels(d) as TxWith
+    LIMIT 1
+    """
+    return run_query(driver, query)
+
+def get_features(driver, client_id):
+    query = f"""
+    MATCH (c:Client {{id: '{client_id}'}})
+    RETURN c.emailDegree as e,
+    c.ssnDegree as s, c.phoneDegree as p, c.TransactionsPageRank as t,
+        c.revTransactionsPageRank as r, c.partOfCommunity as poc,
+        c.communitySize as cs, c.firstPartyFraudScore as fs; 
+    """
+    return run_query(driver, query)
+
 def run_query(driver, query):
     with driver.session() as session:
         try:
