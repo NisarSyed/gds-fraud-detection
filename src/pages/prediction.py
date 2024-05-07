@@ -39,7 +39,6 @@ else:
         
         if st.form_submit_button("Predict"):
             if client_id and client_name and email and ssn and phone and amount and transaction_with and transaction_type:
-                st.write("Prediction result here")
                 clf = load('./src/fraud_model.joblib')
                 features = get_features(driver, client_id)
                 e = features[0]["e"]
@@ -51,7 +50,10 @@ else:
                 cs = features[0]["cs"]
                 fs = features[0]["fs"]
                 prediction = clf.predict([[e, s, p, t, r, poc, cs, fs]])[0]
-                st.write(f"Prediction: {prediction}")
+                if prediction == 1:
+                    st.error("This client carried out a fraudulent transaction.")
+                else:
+                    st.success("This client did not carry out a fraudulent transaction.")
                 st.form_submit_button("Reset")
             else:
                 st.error("Please fill all the fields.")

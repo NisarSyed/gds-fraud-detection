@@ -59,7 +59,8 @@ def view_fp_transactions(driver):
     query = """
     MATCH p=(:Client:FirstPartyFraudster)-[]-(:Transaction)-[]-(c:Client)
     WHERE NOT c:FirstPartyFraudster
-    RETURN DISTINCT c.name;
+    RETURN DISTINCT c.name AS Client, count(p) AS NumberOfTransactions
+    ORDER BY NumberOfTransactions DESC;
     """
     return run_query(driver, query)
 
