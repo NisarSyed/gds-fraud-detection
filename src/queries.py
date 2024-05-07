@@ -29,8 +29,8 @@ def view_transactions(driver):
             RETURN count(t) AS txCnt', {})
         YIELD value
     RETURN TransactionType, value.txCnt AS NumberOfTransactions,
-        round(toFloat(value.txCnt)/toFloat(globalCnt), 2) AS `%Transactions`
-    ORDER BY `%Transactions` DESC;
+        round(toFloat(value.txCnt)/toFloat(globalCnt), 2) AS %Transactions
+    ORDER BY %Transactions DESC;
     """
     return run_query(driver, query)
 
@@ -60,6 +60,14 @@ def view_fp_transactions(driver):
     MATCH p=(:Client:FirstPartyFraudster)-[]-(:Transaction)-[]-(c:Client)
     WHERE NOT c:FirstPartyFraudster
     RETURN DISTINCT c.name;
+    """
+    return run_query(driver, query)
+
+def view_sp_fraudsters(driver):
+    query = """
+    MATCH (f:SecondPartyFraudster) 
+    RETURN DISTINCT f.name AS SecondPartyFraudsters, f.secondPartyFraudScore as FraudScore
+    ORDER BY FraudScore DESC;
     """
     return run_query(driver, query)
 

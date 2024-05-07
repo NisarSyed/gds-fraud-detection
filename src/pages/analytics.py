@@ -64,6 +64,11 @@ else:
                 st.write("These are the clients who transact with first party fraudsters, but aren't labelled as fraudsters themselves.")
                 df = view_fp_transactions(driver)
                 st.table(df)
+            case "SPF":
+                st.subheader(":red[Confirmed] Second Party Fraudsters")
+                st.write("These clients are confirmed to be second party fraudsters.")
+                df = view_sp_fraudsters(driver)
+                st.table(df)
             case "Custom Query":
                 query = st.text_area("Enter your custom query here")
                 if st.button("Run query"):
@@ -75,16 +80,3 @@ else:
                             st.write(df)
                     else:
                         st.error("Invalid query")
-        
-    
-   
-        # query = st.text_area("Enter your custom query here")
-        # if st.button("Run query"):
-        #     df = run_query(driver, query)
-        #     if df is not None:
-        #         try:
-        #             st.table(df)
-        #         except Exception as e:
-        #             st.write(df)
-        #     else:
-        #         st.error("Invalid query")
