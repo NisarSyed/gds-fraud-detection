@@ -3,4 +3,3 @@ python-dotenv==1.0.1
 streamlit==1.33.0
 GraphDataScience==1.10
 scikit-learn==1.4.2
-matplotlib==3.8.4

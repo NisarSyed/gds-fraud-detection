@@ -23,14 +23,14 @@ def view_relationships(driver):
 def view_transactions(driver):
     query = """
     MATCH (t:Transaction)
-    WITH count(t) AS globalCnt
+    WITH count(t) AS total
     UNWIND ['CashIn', 'CashOut', 'Payment', 'Debit', 'Transfer'] AS TransactionType
         CALL apoc.cypher.run('MATCH (t:' + TransactionType + ')
             RETURN count(t) AS txCnt', {})
         YIELD value
     RETURN TransactionType, value.txCnt AS NumberOfTransactions,
-        round(toFloat(value.txCnt)/toFloat(globalCnt), 2) AS %Transactions
-    ORDER BY %Transactions DESC;
+        round(toFloat(value.txCnt)/toFloat(total), 2) AS PercentageOfTransactions
+    ORDER BY PercentageOfTransactions DESC;
     """
     return run_query(driver, query)
 
