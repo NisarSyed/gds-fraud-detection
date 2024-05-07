@@ -1,8 +1,6 @@
-from neo4j import GraphDatabase
 from dotenv import load_dotenv
 import os
-import streamlit as st 
-import pandas as pd
+import streamlit as st
 
 load_dotenv()
 
@@ -29,8 +27,8 @@ def main():
         )
         st.markdown("---")
         st.markdown("### Team Members")
-        st.markdown("1. *Syed Nisar Hussain*")
-        st.markdown("2. *Neil Lakhani*")
+        st.markdown("1. **Syed Nisar Hussain**")
+        st.markdown("2. **Neil Lakhani**")
               
     if st.session_state.setdefault("user", None) is None:
         st.text("Connect to Neo4j Database to continue")
@@ -49,8 +47,8 @@ def main():
         st.write("This app allows you to view graph analytics and predict fraudulent transactions. Please select one of the options below.")
         
         # Display options with placeholder
-        st.page_link("pages/analytics.py", label="Graph Analytics", icon="📊")
         st.page_link("pages/prediction.py", label="Prediction", icon="🔮")
+        st.page_link("pages/analytics.py", label="Graph Analytics", icon="📊")
             
             
 def on_login_click(user, password):
@@ -63,5 +61,5 @@ def on_logout_click():
 def authenticate(user, password):
     return user == USER and password == PASS
 
-if _name_ == "_main_":
+if __name__ == "__main__":
     main()
